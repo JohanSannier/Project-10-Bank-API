@@ -57,7 +57,7 @@ body {
 
 .main-nav-item {
   text-decoration: none;
-  margin-right: 0.5rem;
+  margin-right: 0.8rem;
 }
 
 .main-nav-item:hover {
@@ -169,7 +169,7 @@ body {
   color: #fff;
 }
 
-.sign-in-button:hover {
+button:hover {
   background-color: #015a39;
   border-color: #015a39;
   cursor: pointer;

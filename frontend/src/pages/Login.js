@@ -1,8 +1,18 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/loginSlice";
 
 function Login(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/profile");
+    dispatch(login());
+  };
   return (
     <main className="main bg-dark main-content">
       <section className="sign-in-content">
@@ -21,8 +31,9 @@ function Login(props) {
             <input type="checkbox" id="remember-me" />
             <label htmlFor="remember-me">Remember me</label>
           </div>
-          {/* Onclick use navigate to path profile */}
-          <button className="sign-in-button">Sign In</button>
+          <button className="sign-in-button" onClick={handleSubmit}>
+            Sign In
+          </button>
         </form>
       </section>
     </main>
