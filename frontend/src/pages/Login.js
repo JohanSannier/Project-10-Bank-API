@@ -4,12 +4,19 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../features/loginSlice";
+import { postLogin } from "../utils/apiCall";
 
 function Login(props) {
+  let userMail;
+  let userPassword;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
+    postLogin(userMail, userPassword).then(async (res) => {
+      const token = res?.data?.body?.token;
+      console.log(res);
+    });
     navigate("/profile");
     dispatch(login());
   };
@@ -21,11 +28,23 @@ function Login(props) {
         <form>
           <div className="input-wrapper">
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" />
+            <input
+              type="text"
+              id="username"
+              onInput={(e) => {
+                userMail = e.target.value;
+              }}
+            />
           </div>
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
+            <input
+              type="password"
+              id="password"
+              onInput={(e) => {
+                userPassword = e.target.value;
+              }}
+            />
           </div>
           <div className="input-remember">
             <input type="checkbox" id="remember-me" />
