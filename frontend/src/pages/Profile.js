@@ -5,14 +5,14 @@ import { edit } from "../features/userSlice";
 
 function Profile(props) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.profile);
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          {user.isEdited ? <EditUser /> : "Tony Jarvis!"}
+          {user.isEdited ? <EditUser /> : `${user.firstName} ${user.lastName}!`}
         </h1>
         <button
           className="edit-button"

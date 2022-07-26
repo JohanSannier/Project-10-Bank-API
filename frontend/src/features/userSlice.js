@@ -18,8 +18,12 @@ const userSlice = createSlice({
     clearUser: (state) => {
       state.profile = {};
     },
+    modifyUser: (state, action) => {
+      state.profile.firstName = action.firstName;
+      state.profile.lastName = action.lastName;
+    },
   },
 });
 
-export const { edit, getUser, clearUser } = userSlice.actions;
+export const { edit, getUser, clearUser, modifyUser } = userSlice.actions;
 export default userSlice.reducer;
