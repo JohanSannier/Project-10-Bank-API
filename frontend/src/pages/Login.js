@@ -4,19 +4,18 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../features/loginSlice";
-import { postLogin } from "../utils/apiCall";
+import { postLogin, postProfile } from "../utils/apiCall";
 
 function Login(props) {
   let userMail;
   let userPassword;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    postLogin(userMail, userPassword).then(async (res) => {
-      const token = res?.data?.body?.token;
-      console.log(res);
-    });
+    const response = await postLogin(userMail, userPassword);
+    const profile = await postProfile();
+    console.log(profile);
     navigate("/profile");
     dispatch(login());
   };
