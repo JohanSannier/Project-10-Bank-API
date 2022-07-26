@@ -18,6 +18,28 @@ const postLogin = async (userMail, userPassword) => {
   return token;
 };
 
+const postSignup = async (
+  userMail,
+  userPassword,
+  userFirstName,
+  userLastName
+) => {
+  const res = await fetch(`${url}/user/signup`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: userMail,
+      password: userPassword,
+      firstName: userFirstName,
+      lastName: userLastName,
+    }),
+  });
+  return res.json();
+};
+
 const postProfile = async () => {
   const res = await fetch(`${url}/user/profile`, {
     method: "POST",
@@ -30,4 +52,20 @@ const postProfile = async () => {
   return res.json();
 };
 
-export { postLogin, postProfile };
+const putProfile = async (firstName, lastName) => {
+  const res = await fetch(`${url}/user/profile`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: {
+      firstName,
+      lastName,
+    },
+  });
+  return res.json();
+};
+
+export { postLogin, postProfile, postSignup, putProfile };

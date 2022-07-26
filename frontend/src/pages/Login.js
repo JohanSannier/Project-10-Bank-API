@@ -2,9 +2,10 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/loginSlice";
 import { postLogin, postProfile } from "../utils/apiCall";
+import { getUser } from "../features/userSlice";
 
 function Login(props) {
   let userMail;
@@ -15,7 +16,7 @@ function Login(props) {
     e.preventDefault();
     const response = await postLogin(userMail, userPassword);
     const profile = await postProfile();
-    console.log(profile);
+    dispatch(getUser(profile));
     navigate("/profile");
     dispatch(login());
   };

@@ -7,12 +7,14 @@ import argentBankLogo from "../img/argentBankLogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import ConnectedUser from "./ConnectedUser";
 import { logout } from "../features/loginSlice";
+import { clearUser } from "../features/userSlice";
 
 function Navbar(props) {
   const dispatch = useDispatch();
   const { isConnected } = useSelector((state) => state.login);
   const handleSignOut = () => {
     dispatch(logout());
+    dispatch(clearUser());
   };
   return (
     <nav className="main-nav">
