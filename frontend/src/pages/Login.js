@@ -8,17 +8,22 @@ import { postLogin, postProfile } from "../utils/apiCall";
 import { getUser } from "../features/userSlice";
 
 function Login(props) {
-  let userMail;
-  let userPassword;
+  let userMail = "";
+  let userPassword = "";
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await postLogin(userMail, userPassword);
-    const profile = await postProfile();
-    dispatch(getUser(profile));
-    navigate("/profile");
-    dispatch(login());
+    if (userMail.length && userPassword.length > 0) {
+      // eslint-disable-next-line no-unused-vars
+      const response = await postLogin(userMail, userPassword);
+      const profile = await postProfile();
+      dispatch(getUser(profile));
+      navigate("/profile");
+      dispatch(login());
+    } else {
+      alert("Veuillez saisir un nom d'utilisateur et un mot de passe correct.");
+    }
   };
   return (
     <main className="main bg-dark main-content">

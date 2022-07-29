@@ -14,7 +14,6 @@ const postLogin = async (userMail, userPassword) => {
     }),
   });
   token = (await res.json()).body.token;
-  console.log(token);
   return token;
 };
 
