@@ -1,143 +1,201 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  title: Bank Argent API documentation
-  description: Contains all available API endpoints in this codebase
-  version: '1.0.0'
-  termsOfService: 'http://swagger.io/terms/'
+  title: Argent Bank transaction API documentation
+  description: Contains API endpoints for the future transaction feature implementation
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
 host: localhost:3001
 basePath: /api/v1
 schemes:
   - http
 paths:
-  /user/login:
-    post:
+  /user/transactions/:
+    get:
       tags:
-        - User Module
-      summary: Login
-      description: API for Login
+        - Transactions Module
+      summary: Get all the transactions from the connected user
+      description: API to get all the transactions of the user for the last 30 days
       parameters:
-        - in: body
-          name: body
-          description: Login Payload
+        - in: header
+          name: Authorization
+          description: Bearer JWT token
+          type: string
           required: true
-          schema:
-            $ref: '#/definitions/Login'
       produces:
         - application/json
       responses:
-        '200':
-          description: Login Successfully
+        "200":
+          description: All transactions successfully retrived
           schema:
-            $ref: '#/definitions/LoginResponse'
-        '400':
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+              - type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      transactions:
+                        type: array
+                        description: the transactions corresponding to the connected user
+                        items:
+                          $ref: "#/definitions/TransactionReadOnly"
+        "400":
           description: Invalid Fields
-        '500':
-          description: Internal Server Error
-  /user/signup:
-    post:
-      tags:
-        - User Module
-      summary: Signup
-      description: API for Signup
-      parameters:
-        - in: body
-          name: body
-          description: Signup Payload
-          required: true
           schema:
-            $ref: '#/definitions/User'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Signup Successfully
+            $ref: "#/definitions/ApiResponse"
+        "401":
+          description: Unauthorized
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
-          description: Invalid Fields
-        '500':
+            $ref: "#/definitions/ApiResponse"
+        "500":
           description: Internal Server Error
-  /user/profile:
-    post:
-      security:
-        - Bearer: []
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /user/transactions/all/{dateRange}:
+    get:
       tags:
-        - User Module
-      summary: User Profile API
-      description: API for fetching a user profile
+        - Transactions Module
+      summary: Get all the transactions that happened during a certain date range
+      description: API to get all the transactions of the user within a specific date range
       parameters:
         - in: header
           name: Authorization
           description: Attach Bearer JWT token
+          type: string
+          required: true
+        - in: path
+          name: dateRange
+          description: date range
+          type: string
           required: true
       produces:
         - application/json
       responses:
-        '200':
-          description: User profile retrieved successully
+        "200":
+          description: Successfully retrieved all the transactions
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+              - type: object
+                properties:
+                  body:
+                    type: object
+                    properties:
+                      transactions:
+                        type: array
+                        description: all the transactions of the user
+                        items:
+                          $ref: "#/definitions/TransactionReadOnly"
+        "400":
           description: Invalid Fields
-        '500':
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
           description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /user/transactions/{id}:
+    get:
+      tags:
+        - Transactions Module
+      security:
+        - Bearer: []
+      summary: Get transaction by id
+      description: get a unique transaction using the transaction id parameter
+      parameters:
+        - in: header
+          name: Authorization
+          description: Bearer JWT token
+          type: string
+          required: true
+        - in: path
+          name: id
+          description: Id of the transaction to get
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Transaction successfully retrived
+          schema:
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+              - type: object
+                properties:
+                  body:
+                    $ref: "#/definitions/TransactionFull"
+        "400":
+          description: Invalid Fields
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
     put:
+      tags:
+        - Transactions Module
       security:
         - Bearer: []
-      tags:
-        - User Module
-      summary: User Profile API
-      description: API for updating a user profile
+      summary: update a transaction according to the Id
+      description: API to put change the details of a transaction according to the transactionId parameter
       parameters:
         - in: header
           name: Authorization
-          description: Attach Bearer JWT token
+          description: Bearer JWT token
+          type: string
+          required: true
+        - in: path
+          name: id
+          description: id of the transaction
+          type: string
           required: true
         - in: body
           name: body
-          description: Update user profile attributes
+          description: payload
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: "#/definitions/TransactionEditable"
       produces:
         - application/json
       responses:
-        '200':
-          description: User profile retrieved successully
+        "200":
+          description: Transaction successfully updated
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            allOf:
+              - $ref: "#/definitions/ApiResponse"
+              - type: object
+                properties:
+                  body:
+                    $ref: "#/definitions/TransactionFull"
+        "400":
           description: Invalid Fields
-        '500':
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "500":
           description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ApiResponse"
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
 definitions:
-  User:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-      firstName:
-        type: string
-        description: user first name
-      lastName:
-        type: string
-        description: user last name
-  Login:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
   ApiResponse:
     type: object
     properties:
@@ -145,22 +203,55 @@ definitions:
         type: integer
       message:
         type: string
-      body:
-        type: object
-        properties:
-          id:
-            type: string
-          email:
-            type: string
-  LoginResponse:
+  TransactionFull:
+    allOf:
+      - $ref: "#/definitions/TransactionReadOnly"
+      - $ref: "#/definitions/TransactionEditable"
+  TransactionReadOnly:
+    type: object
+    required:
+      - id
+      - date
+      - name
+      - amount
+      - type
+    properties:
+      id:
+        type: string
+        description: Unique id of a transaction
+        example: HW59VJD9103LCJL88
+      date:
+        type: string
+        format: date-time
+        description: The Date of the transaction
+        example: "2022-07-29T06:00:00"
+      description:
+        type: string
+        description: transaction name
+        example: Nintendo
+      amount:
+        type: number
+        format: float
+        description: The amount of the transaction
+        example: 500
+      type:
+        type: string
+        description: Transaction type
+        enum:
+          - credit card
+          - check
+          - cash
+          - transfer
+          - fees
+
+  TransactionEditable:
     type: object
     properties:
-      token:
+      category:
         type: string
-  UserProfile:
-    type: object
-    properties:
-      firstName:
+        description: The category of the transaction
+        example: Rent
+      notes:
         type: string
-      lastName:
-        type: string
+        description: notes about this transaction
+        example: monthly rent
