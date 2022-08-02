@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import EditUser from "../components/EditUser";
 import { edit } from "../features/userSlice";
 import Error from "./Error";

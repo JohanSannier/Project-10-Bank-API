@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { edit, modifyUser } from "../features/userSlice";
 import { putProfile } from "../utils/apiCall";
 
@@ -16,6 +16,7 @@ function EditUser(props) {
         lastName: profile.body.lastName,
       })
     );
+    dispatch(edit());
   };
   const handleCancel = () => {
     dispatch(edit());
