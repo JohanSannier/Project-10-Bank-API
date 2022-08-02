@@ -1,18 +1,28 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import EditUser from "../components/EditUser";
 import { edit } from "../features/userSlice";
+import Error from "./Error";
 
 function Profile(props) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.profile);
+  const user = useSelector((state) => state.user);
+  const isConnected = useSelector((state) => state.login.isConnected);
+  if (!isConnected) {
+    return <Error />;
+  }
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          {user.isEdited ? <EditUser /> : `${user.firstName} ${user.lastName}!`}
+          {user.isEdited ? (
+            <EditUser />
+          ) : (
+            `${user.profile.firstName} ${user.profile.lastName}!`
+          )}
         </h1>
         <button
           className="edit-button"

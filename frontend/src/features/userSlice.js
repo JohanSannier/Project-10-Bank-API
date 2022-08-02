@@ -19,8 +19,8 @@ const userSlice = createSlice({
       state.profile = {};
     },
     modifyUser: (state, action) => {
-      state.profile.firstName = action.firstName;
-      state.profile.lastName = action.lastName;
+      state.profile.firstName = action.payload.firstName;
+      state.profile.lastName = action.payload.lastName;
     },
   },
 });

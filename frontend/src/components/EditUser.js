@@ -1,15 +1,21 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { edit, modifyUser } from "../features/userSlice";
 import { putProfile } from "../utils/apiCall";
 
 function EditUser(props) {
-  let firstName;
-  let lastName;
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const dispatch = useDispatch();
-  const handleSave = () => {
-    dispatch(modifyUser(firstName, lastName));
-    putProfile(firstName, lastName);
+  const handleSave = async () => {
+    const profile = await putProfile(firstName, lastName);
+    console.log(profile);
+    dispatch(
+      modifyUser({
+        firstName: profile.body.firstName,
+        lastName: profile.body.lastName,
+      })
+    );
   };
   const handleCancel = () => {
     dispatch(edit());
@@ -21,16 +27,20 @@ function EditUser(props) {
           type="text"
           placeholder="First name"
           id="edit-first-name"
-          onChange={(e) => (firstName = e.target.value)}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
         />
         <input
           type="text"
           placeholder="Last name"
           id="edit-last-name"
-          onChange={(e) => (lastName = e.target.value)}
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
         />
       </div>
-      <div className="edits-buttons">
+      <div className="edit-buttons">
         <button onClick={handleSave}>Save</button>
         <button onClick={handleCancel}>Cancel</button>
       </div>

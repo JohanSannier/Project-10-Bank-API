@@ -18,6 +18,7 @@ function Login(props) {
       // eslint-disable-next-line no-unused-vars
       const response = await postLogin(userMail, userPassword);
       const profile = await postProfile();
+      console.log(profile);
       dispatch(getUser(profile));
       navigate("/profile");
       dispatch(login());

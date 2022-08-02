@@ -52,6 +52,10 @@ const postProfile = async () => {
 };
 
 const putProfile = async (firstName, lastName) => {
+  const profile = {
+    firstName,
+    lastName,
+  };
   const res = await fetch(`${url}/user/profile`, {
     method: "PUT",
     headers: {
@@ -59,12 +63,13 @@ const putProfile = async (firstName, lastName) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: {
-      firstName,
-      lastName,
-    },
+    body: JSON.stringify(profile),
   });
-  return res.json();
+  const updatedProfile = await res.json();
+  // if (res.status) {
+  // si pqs 200 return error page
+  // }
+  return updatedProfile;
 };
 
 export { postLogin, postProfile, postSignup, putProfile };
