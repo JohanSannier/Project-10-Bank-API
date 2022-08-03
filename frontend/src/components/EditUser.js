@@ -9,7 +9,6 @@ function EditUser(props) {
   const dispatch = useDispatch();
   const handleSave = async () => {
     const profile = await putProfile(firstName, lastName);
-    console.log(profile);
     dispatch(
       modifyUser({
         firstName: profile.body.firstName,
