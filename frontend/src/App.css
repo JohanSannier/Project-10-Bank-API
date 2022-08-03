@@ -303,3 +303,34 @@ button:hover {
     width: 200px;
   }
 }
+
+.modal {
+  position: relative;
+  margin-bottom: 4rem;
+}
+
+.edit-buttons,
+.edit-inputs {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.modal button,
+.modal input {
+  padding: 0.5rem;
+}
+
+.modal button {
+  width: 6rem;
+}
+
+.edit-inputs {
+  margin: 0.7rem 0;
+}
+
+.edit-buttons {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}

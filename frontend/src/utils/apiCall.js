@@ -66,6 +66,7 @@ const putProfile = async (firstName, lastName) => {
     body: JSON.stringify(profile),
   });
   const updatedProfile = await res.json();
+  console.log(updatedProfile);
   // if (res.status) {
   // si pqs 200 return error page
   // }
